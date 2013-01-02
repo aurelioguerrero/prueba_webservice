@@ -1,0 +1,56 @@
+<html>
+ <head>
+    <title>Calling Web Service from jQuery</title>    
+	<script type="text/javascript" src="lib/jquery-1.8.3.js"></script>	
+    <script src="phonegap.js"></script>
+	<script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnCallWebService").click(function (event) {
+                var wsUrl = "http://www.myaspsandbox.com/myws/Service1.asmx?op=Hello";
+
+                var soapRequest =	'<?xml version="1.0" encoding="utf-8"?> \
+									<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" \
+										xmlns:xsd="http://www.w3.org/2001/XMLSchema" \
+										xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"> \
+										<soap:Body> \
+											<Hello xmlns="http://test.com/"> \
+												<Name>' + $("#txtName").val() + '</Name> \
+											</Hello> \
+										</soap:Body> \
+									</soap:Envelope>';
+
+                $.ajax({
+                    type: "POST",
+                    url: wsUrl,
+                    contentType: "text/xml",
+                    dataType: "xml",
+                    data: soapRequest,
+					crossDomain: true,
+                    success: processSuccess,
+                    error: processError
+                });
+
+            });
+        });
+
+        function processSuccess(data, status, req) {
+            if (status == "success")
+                $("#response").text($(req.responseXML).find("HelloResult").text());
+        
+		}
+        function processError(data, status, req) {
+            $("#response").text(req.responseText + " " + status);
+        }  
+
+    </script>
+</head>
+<body>
+    <h3>
+        Calling Web Services with jQuery/AJAX
+    </h3>
+    Enter your name:
+    <input id="txtName" type="text" />
+    <input id="btnCallWebService" value="Call web service" type="button" />
+    <div id="response" />
+</body>
+</html>
