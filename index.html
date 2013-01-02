@@ -6,18 +6,16 @@
 	<script type="text/javascript">
         $(document).ready(function () {
             $("#btnCallWebService").click(function (event) {
-                var wsUrl = "http://www.myaspsandbox.com/myws/Service1.asmx?op=Hello";
+                var wsUrl = "http://www.reactiva.com.co:8097/atlas/AutenticarUsuarioWS?wsdl";
 
-                var soapRequest =	'<?xml version="1.0" encoding="utf-8"?> \
-									<soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" \
-										xmlns:xsd="http://www.w3.org/2001/XMLSchema" \
-										xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"> \
-										<soap:Body> \
-											<Hello xmlns="http://test.com/"> \
-												<Name>' + $("#txtName").val() + '</Name> \
-											</Hello> \
-										</soap:Body> \
-									</soap:Envelope>';
+                var soapRequest =	'<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:aut="http://www.reactiva.com.co:8097/atlas/AutenticarUsuarioWS"> \
+										<soapenv:Body> \
+											<aut:autenticar> \
+												<username>' + $("#txtUserName").val() + '</username> \
+												<password>' + $("#txtPassword").val() + '</password> \
+											</aut:autenticar> \
+										</soapenv:Body> \
+									</soapenv:Envelope>';
 
                 $.ajax({
                     type: "POST",
@@ -44,12 +42,9 @@
 
     </script>
 </head>
-<body>
-    <h3>
-        Calling Web Services with jQuery/AJAX
-    </h3>
-    Enter your name:
-    <input id="txtName" type="text" />
+<body>    
+   	Usuario<input id="txtUserName" value="atlas" type="text" />
+	Password<input id="txtPassword" value="12345" type="text" />
     <input id="btnCallWebService" value="Call web service" type="button" />
     <div id="response" />
 </body>
